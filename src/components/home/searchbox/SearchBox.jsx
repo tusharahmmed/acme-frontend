@@ -1,9 +1,90 @@
-import React from "react";
+/* eslint-disable no-extra-boolean-cast */
+import React, { useState } from "react";
+import { useDebounce } from "../../../hooks";
+import { useGetDocsQuery } from "../../../rtk/features/doc/docApi";
+import MatchItem from "../matchItem/MatchItem";
 
 const SearchBox = () => {
+  const query = {};
+  const [searchInput, setSearchInput] = useState("");
+
+  const debouncedSearchTerm = useDebounce({
+    searchQuery: searchInput,
+    delay: 600,
+  });
+
+  if (!!debouncedSearchTerm) {
+    query["q"] = debouncedSearchTerm;
+  }
+
+  // fetching data
+  const { data, isLoading, isError, error } = useGetDocsQuery(
+    { ...query },
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
+
+  const { docs } = data || {};
+
+  let content = (
+    <div className="flex items-center justify-center h-[100px]">
+      <p className="text-description">No recent searches</p>
+    </div>
+  );
+
+  if (isLoading) {
+    content = (
+      <div className="h-[100px] px-8 overflow-x-auto">
+        <div className="my-4 border-1 border-gray-400 rounded-lg animate-pulse">
+          <div className="text-primary  m-4 rounded-lg bg-gray-200 h-2"></div>
+          <div className="rounded mx-4 mb-4 font-poppins bg-gray-200 h-2 "></div>
+        </div>
+      </div>
+    );
+  }
+  if (!isLoading && !isError && docs?.length === 0) {
+    content = (
+      <div className="flex items-center justify-center h-[100px]">
+        <p className="text-description">No Document Found!</p>
+      </div>
+    );
+  }
+  if (!isLoading && !isError && docs?.length > 0) {
+    content = (
+      <div className="h-[400px] px-8 overflow-x-auto ">
+        {docs.map((item) => (
+          <MatchItem key={item?.id} data={item} />
+        ))}
+      </div>
+    );
+  }
+  if (!isLoading && isError) {
+    content = content = (
+      <div className="flex items-center justify-center gap-2 h-[100px] text-orange-500">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+          />
+        </svg>
+
+        <p className="text-description">{error?.message}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0, 0, 0, .3)] backdrop-saturate-[saturate(180%) blur(10px)]">
-      <div className="max-w-2xl bg-white h-[200px] m-auto mt-16 rounded-lg relative">
+      <div className="max-w-2xl bg-white m-auto mt-16 rounded-lg relative">
         {/* header */}
         <div className="border-b-1 border-gray-200 h-12 relative text-description">
           <span className="absolute top-[11px] left-6">
@@ -27,14 +108,14 @@ const SearchBox = () => {
             type="text"
             name="search"
             placeholder="Search docs.."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
           />
         </div>
         {/* content */}
-        <div className="flex items-center justify-center h-[52%]">
-          <p className="text-description">No recent searches</p>
-        </div>
+        {content}
         {/* bottom  */}
-        <div className="border-t-1 border-gray-200 h-12 absolute left-0 bottom-0 right-0 text-description flex items-center px-6 gap-4">
+        <div className="bg-white border-t-1 border-gray-200 h-12 text-description flex items-center px-6 gap-4">
           <div className="flex items-center justify-center gap-2">
             <div className="border-1 border-gray-300 p-1 h-6 w-6 flex items-center justify-center text-[8px] font-semibold font-roboto rounded">
               Ent
