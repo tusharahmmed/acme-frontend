@@ -1,9 +1,10 @@
 import "./App.css";
+import { SearchBox } from "./components/home";
 
 function App() {
   return (
     <>
-      <div className="bg-blue">App</div>
+      <SearchBox />
     </>
   );
 }

@@ -29,7 +29,7 @@ module.exports = {
                 "blue": "#1972f5",
                 "white": "#FFFFFF",
                 "title": "#1F2935",
-                "text-description": "#4b5563",
+                "description": "#969faf",
             },
             backgroundColor: {
                 "blue": "#1972f5",
