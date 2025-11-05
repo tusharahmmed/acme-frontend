@@ -11,7 +11,7 @@ const MatchItem = (props) => {
 
   return (
     <div
-      className={`my-4 border-1 border-gray-400 rounded-lg cursor-pointer ${
+      className={`my-4 border-1 border-gray-500 rounded-lg cursor-pointer ${
         activeId == props?.data?.id ? "bg-blue text-white" : ""
       }`}
       onClick={() => {
@@ -21,7 +21,7 @@ const MatchItem = (props) => {
       <div>
         {title && (
           <div
-            className={`p-4 rounded-lg ${
+            className={`p-4 rounded-lg font-medium ${
               activeId == props?.data?.id ? "" : "bg-white text-primary"
             }`}
             dangerouslySetInnerHTML={{ __html: title }}
@@ -30,7 +30,7 @@ const MatchItem = (props) => {
         {summary && (
           <div
             className={` px-4 pb-4 font-poppins text-sm ${
-              activeId == props?.data?.id ? "text-white" : "text-description"
+              activeId == props?.data?.id ? "text-white" : "text-gray-600"
             }`}
             dangerouslySetInnerHTML={{
               __html: summary,

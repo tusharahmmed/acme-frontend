@@ -126,7 +126,7 @@ const SearchBox = () => {
     <div className="fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0, 0, 0, .3)] backdrop-saturate-[saturate(180%) blur(10px)]">
       <div className="max-w-2xl bg-white m-auto mt-16 rounded-lg relative">
         {/* header */}
-        <div className="border-b-1 border-gray-200 h-12 relative text-description">
+        <div className="border-b-1 border-gray-200 h-12 relative text-gray-700">
           <span className="absolute top-[11px] left-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -155,7 +155,7 @@ const SearchBox = () => {
         {/* content */}
         {content}
         {/* bottom  */}
-        <div className="bg-white border-t-1 border-gray-200 h-12 text-description flex items-center px-6 gap-4">
+        <div className="bg-white border-t-1 border-gray-200 h-12 text-gray-700 flex items-center px-6 gap-4 rounded-bl-lg rounded-br-lg">
           <div className="flex items-center justify-center gap-2">
             <div className="border-1 border-gray-300 p-1 h-6 w-6 flex items-center justify-center text-[8px] font-semibold font-roboto rounded">
               Ent
