@@ -1,12 +1,19 @@
 /* eslint-disable no-extra-boolean-cast */
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDebounce } from "../../../hooks";
 import { useGetDocsQuery } from "../../../rtk/features/doc/docApi";
 import MatchItem from "../matchItem/MatchItem";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setActiveId,
+  setSelectedDoc,
+} from "../../../rtk/features/doc/docSlice";
 
 const SearchBox = () => {
   const query = {};
   const [searchInput, setSearchInput] = useState("");
+  const { activeId } = useSelector((state) => state.doc);
+  const dispatch = useDispatch();
 
   const debouncedSearchTerm = useDebounce({
     searchQuery: searchInput,
@@ -26,6 +33,39 @@ const SearchBox = () => {
   );
 
   const { docs } = data || {};
+
+  // key down handler
+  const handleKeyDown = useCallback(
+    (e) => {
+      let activeIndex = docs?.findIndex((item) => item.id == activeId);
+      if (e.keyCode === 38) {
+        if (activeIndex === 0) {
+          dispatch(setActiveId(docs[docs?.length - 1]?.id));
+        } else {
+          dispatch(setActiveId(docs[activeIndex - 1]?.id));
+        }
+      }
+      if (e.keyCode === 40) {
+        if (activeIndex === docs?.length - 1) {
+          dispatch(setActiveId(docs[0]?.id));
+        } else {
+          dispatch(setActiveId(docs[activeIndex + 1]?.id));
+        }
+      }
+      if (e.keyCode == 13) {
+        dispatch(setSelectedDoc(docs[activeIndex]));
+      }
+    },
+    [docs, activeId]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   let content = (
     <div className="flex items-center justify-center h-[100px]">
