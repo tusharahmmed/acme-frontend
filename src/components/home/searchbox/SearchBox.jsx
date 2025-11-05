@@ -92,7 +92,7 @@ const SearchBox = () => {
   }
   if (!isLoading && !isError && docs?.length > 0) {
     content = (
-      <div className="h-[400px] px-8 overflow-x-auto ">
+      <div className="h-[410px] tiny:h-[70vh] sm:h-[70vh] px-8 overflow-x-auto ">
         {docs.map((item) => (
           <MatchItem key={item?.id} data={item} />
         ))}

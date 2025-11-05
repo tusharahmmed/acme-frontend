@@ -1,12 +1,11 @@
+import { useSelector } from "react-redux";
 import "./App.css";
-import { SearchBox } from "./components/home";
+import { Details, SearchBox } from "./components/home";
 
 function App() {
-  return (
-    <>
-      <SearchBox />
-    </>
-  );
+  const { selectedDoc } = useSelector((state) => state.doc);
+
+  return <>{selectedDoc ? <Details data={selectedDoc} /> : <SearchBox />}</>;
 }
 
 export default App;
