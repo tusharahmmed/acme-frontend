@@ -1,20 +1,22 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedDoc } from "../../../rtk/features/doc/docSlice";
 
 const MatchItem = (props) => {
   const { title, summary } = props?.data?.heighlight || props?.data || {};
 
-  const insertHeighlightContent = (content) => {
-    return content;
-  };
+  const dispatch = useDispatch();
 
   const { activeId } = useSelector((store) => store.doc);
 
   return (
     <div
-      className={`my-4 border-1 border-gray-400 rounded-lg ${
+      className={`my-4 border-1 border-gray-400 rounded-lg cursor-pointer ${
         activeId == props?.data?.id ? "bg-blue text-white" : ""
       }`}
+      onClick={() => {
+        dispatch(setSelectedDoc(props?.data));
+      }}
     >
       <div>
         {title && (
@@ -22,7 +24,7 @@ const MatchItem = (props) => {
             className={`p-4 rounded-lg ${
               activeId == props?.data?.id ? "" : "bg-white text-primary"
             }`}
-            dangerouslySetInnerHTML={{ __html: insertHeighlightContent(title) }}
+            dangerouslySetInnerHTML={{ __html: title }}
           ></div>
         )}
         {summary && (
@@ -31,7 +33,7 @@ const MatchItem = (props) => {
               activeId == props?.data?.id ? "text-white" : "text-description"
             }`}
             dangerouslySetInnerHTML={{
-              __html: insertHeighlightContent(summary),
+              __html: summary,
             }}
           ></div>
         )}
