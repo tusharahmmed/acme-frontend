@@ -85,7 +85,7 @@ This frontend connects to the Legal Document backend API.
 
 ### Server Details
 
-- **API Base URL**: `http://localhost:5000`
+- **API Base URL**: `http://localhost:5000/api`
 - **Tech Stack**: Node.js, Express, TypeScript, Elastic Search
 
 ---
